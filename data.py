@@ -1,6 +1,5 @@
-import pandas as pd
 import sqlite3
-
+import csv
 
 connexion = sqlite3.connect('table_repro.db')
 cursor = connexion.cursor()
@@ -13,6 +12,8 @@ H REAL,
 SH REAL
 );
 """)
+
+
 connexion.commit()
 cursor = connexion.cursor()
 
