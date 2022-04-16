@@ -10,5 +10,4 @@ with open('Repro_IS.csv', 'r') as csvfile:
         query = 'SELECT (id) INTO station WHERE nom = "{}"'.format(
             row['Station'])
         result = cursor.execute(query)
-
-if result.fetchone() == None:
+        if result.fetchone() == None:
