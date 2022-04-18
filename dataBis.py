@@ -2,7 +2,7 @@ import sqlite3
 import csv
 # CRUD : create, read, update, delete
 
-connexion = sqlite3.connect('Vid1.db')
+connexion = sqlite3.connect('table_repro_IS.db')
 cursor = connexion.cursor()
 
 my_code = ("213",)
