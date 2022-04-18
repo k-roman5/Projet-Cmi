@@ -6,7 +6,7 @@ import csv
 connexion = sqlite3.connect('table_repro_IS.db')
 cursor = connexion.cursor()
 
-with open(r'C:\Users\Younes\Downloads\Repro_IS (2).csv') as csvfile:
+with open(r'Repro_IS.csv') as csvfile:
     reader = csv.DictReader(csvfile, delimiter=';')
     for row in reader:
         print("Nouvelle ligne :")
