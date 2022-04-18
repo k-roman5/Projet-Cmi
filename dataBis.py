@@ -15,13 +15,11 @@ with open(r'Repro_IS.csv') as csvfile:
         res = cursor.execute(query)
         if res.fetchone() == None:  # if the station doesn't exist
             print("res.fetchone() :", res.fetchone())
-            new_station = (cursor.lastrowid,
-                           row['Station'], row['Range'], row['Altitude'])
+            new_station = (row['Station'], row['Range'], row['Altitude'])
             cursor.execute(
-                'INSERT OR REPLACE INTO t_Station VALUES (?,?,?,?)', new_station)
+                'INSERT INTO t_Station VALUES (?,?,?)', new_station)
             print("Station créée")
             connexion.commit()
-    connexion.commit()
 
 
 connexion.close()
