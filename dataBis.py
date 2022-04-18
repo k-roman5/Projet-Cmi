@@ -9,17 +9,25 @@ cursor = connexion.cursor()
 with open(r'Repro_IS.csv') as csvfile:
     reader = csv.DictReader(csvfile, delimiter=';')
     for row in reader:
-        print("Nouvelle ligne :")
-        query = 'SELECT * FROM t_Station WHERE nom = "{}"'.format(
+        req_station = 'SELECT * FROM t_Station WHERE nom = "{}"'.format(
             row['Station'])
-        res = cursor.execute(query)
-        if res.fetchone() == None:  # if the station doesn't exist
-            print("res.fetchone() :", res.fetchone())
+        req_arbre = 'SELECT * FROM t_arbre WHERE code_arbre = "{}"'.format(
+            row['code'])
+
+        res_station = cursor.execute(req_station)
+        res_arbre = cursor.execute(req_arbre)
+
+        if res_station.fetchone() == None:  # if the station doesn't exist
             new_station = (row['Station'], row['Range'], row['Altitude'])
             cursor.execute(
                 'INSERT INTO t_Station VALUES (?,?,?)', new_station)
-            print("Station créée")
-            connexion.commit()
+
+        elif res_arbre.fetchone() == None:
+            new_arbre = (row['code'], row['VH'], row['H'], row['SH'])
+            cursor.execute(
+                'INSERT INTO t_arbre VALUES (?,?,?,?)', new_arbre)
+
+        connexion.commit()
 
 
 connexion.close()
