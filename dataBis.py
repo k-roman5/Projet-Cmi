@@ -18,7 +18,7 @@ with open(r'C:\Users\Younes\Downloads\Repro_IS (2).csv') as csvfile:
             new_station = (cursor.lastrowid,
                            row['Station'], row['Range'], row['Altitude'])
             cursor.execute(
-                'INSERT INTO t_Station VALUES (?,?,?,?)', new_station)
+                'INSERT OR REPLACE INTO t_Station VALUES (?,?,?,?)', new_station)
             print("Station créée")
             connexion.commit()
     connexion.commit()
