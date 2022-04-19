@@ -48,16 +48,32 @@ with open(r'Repro_IS.csv') as csvfile_aled:
 with open(r'Repro_IS.csv') as csvfile_aled:
     reader_aled = csv.DictReader(csvfile_aled, delimiter=';')
     for row in reader_aled:  # new line in csv
-        req_vallee = 'SELECT * FROM t_arbre WHERE nom = "{}"'.format(
-            row['code'])  # requete pour rechercher l'vallee
+        req_vallee = 'SELECT * FROM t_vallee WHERE nom = "{}"'.format(
+            row['valley'])  # requete pour rechercher la vallee
         res_vallee = cursor.execute(req_vallee)  # recherche de la vallee
 
         if res_vallee.fetchone() == None:  # if the valley doesn't exist
             print("la vallee {} n'existe pas".format(row['code']))
             new_vallee = (row['valley'])  # create a new arbre
             cursor.execute(
-                'INSERT INTO t_arbre VALUES (?)', new_vallee)  # insert the new valley
+                'INSERT INTO t_vallee VALUES (?)', new_vallee)  # insert the new valley
             print("vallee insérée")
+    connexion.commit()  # commit the changes
+
+with open(r'Repro_IS.csv') as csvfile_aled:
+    reader_aled = csv.DictReader(csvfile_aled, delimiter=';')
+    for row in reader_aled:  # new line in csv
+        req_recolte = 'SELECT * FROM t_recolte WHERE numero = "{}"'.format(
+            row['harv_num'])  # requete pour rechercher la recolte
+        res_recolte = cursor.execute(req_recolte)  # recherche de la recolte
+
+        if res_recolte.fetchone() == None:  # if the "recolte" doesn't exist
+            print("la recolte {} n'existe pas".format(row['code']))
+            new_recolte = (row['harv_num'], row['DD'], row['harv'], row['Year'], row['Date'], row['Ntot1'], row['Ntot'], row['Mtot'],
+                           row['oneacorn'], row['tot_Germ'], row['M_Germ'], row['N_Germ'], row['rate_Germ'])  # create a new "recolte"
+            cursor.execute(
+                'INSERT INTO t_recolte VALUES (?)', new_recolte)  # insert the new "recolte"
+            print("recolte insérée")
     connexion.commit()  # commit the changes
 
 connexion.close()  # close the connection
