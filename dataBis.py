@@ -45,5 +45,19 @@ with open(r'Repro_IS.csv') as csvfile_aled:
                 print("arbre insérée")
     connexion.commit()  # commit the changes
 
+with open(r'Repro_IS.csv') as csvfile_aled:
+    reader_aled = csv.DictReader(csvfile_aled, delimiter=';')
+    for row in reader_aled:  # new line in csv
+        req_vallee = 'SELECT * FROM t_arbre WHERE nom = "{}"'.format(
+            row['code'])  # requete pour rechercher l'vallee
+        res_vallee = cursor.execute(req_vallee)  # recherche de la vallee
+
+        if res_vallee.fetchone() == None:  # if the valley doesn't exist
+            print("la vallee {} n'existe pas".format(row['code']))
+            new_vallee = (row['valley'])  # create a new arbre
+            cursor.execute(
+                'INSERT INTO t_arbre VALUES (?)', new_vallee)  # insert the new valley
+            print("vallee insérée")
+    connexion.commit()  # commit the changes
 
 connexion.close()  # close the connection
