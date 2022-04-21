@@ -48,13 +48,13 @@ with open(r'Repro_IS.csv') as csvfile_aled:
 with open(r'Repro_IS.csv') as csvfile_aled:
     reader_aled = csv.DictReader(csvfile_aled, delimiter=';')
     for row in reader_aled:  # new line in csv
-        req_vallee = 'SELECT * FROM t_vallee WHERE nom = "{}"'.format(
-            row['valley'])  # requete pour rechercher la vallee
+        req_vallee = 'SELECT * FROM t_vallee WHERE valley = "{}"'.format(
+            row['Valley'])  # requete pour rechercher la vallee
         res_vallee = cursor.execute(req_vallee)  # recherche de la vallee
 
         if res_vallee.fetchone() == None:  # if the valley doesn't exist
-            print("la vallee {} n'existe pas".format(row['code']))
-            new_vallee = (row['valley'])  # create a new arbre
+            print("la vallee {} n'existe pas".format(row['Valley']))
+            new_vallee = (row['Valley'])  # create a new vallee
             cursor.execute(
                 'INSERT INTO t_vallee VALUES (?)', new_vallee)  # insert the new valley
             print("vallee insérée")
@@ -72,7 +72,7 @@ with open(r'Repro_IS.csv') as csvfile_aled:
             new_recolte = (row['harv_num'], row['DD'], row['harv'], row['Year'], row['Date'], row['Ntot1'], row['Ntot'], row['Mtot'],
                            row['oneacorn'], row['tot_Germ'], row['M_Germ'], row['N_Germ'], row['rate_Germ'])  # create a new "recolte"
             cursor.execute(
-                'INSERT INTO t_recolte VALUES (?)', new_recolte)  # insert the new "recolte"
+                'INSERT INTO t_recolte VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)', new_recolte)  # insert the new "recolte"
             print("recolte insérée")
     connexion.commit()  # commit the changes
 
