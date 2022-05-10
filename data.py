@@ -18,16 +18,17 @@ with open(r'Repro_IS.csv') as csvfile:
         res_arbre = cursor.execute(req_arbre)
 
         if res_station.fetchone() == None:  # if the station doesn't exist
-            new_station = (row['Station'], row['Range'], row['Altitude'])
+            print('La station {} n\'existe pas'.format(row['Station']))
+            new_station = (row['Station'], row['Range'],
+                           row['Altitude'])  # create a new station
+            print('station crée')
             cursor.execute(
-                'INSERT INTO t_Station VALUES (?,?,?)', new_station)
+                'INSERT INTO t_Station VALUES (?,?,?)', new_station)  # insert the new station
+            print("station insérée")
+        else:
+            print("station existante")
 
-        if res_arbre.fetchone() == None:
-            new_arbre = (row['code'], row['VH'], row['H'], row['SH'])
-            cursor.execute(
-                'INSERT INTO t_arbre VALUES (?,?,?,?)', new_arbre)
-
-        connexion.commit()
+        connexion.commit()  # commit the changes
 
 
 connexion.close()
