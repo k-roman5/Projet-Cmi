@@ -1,6 +1,7 @@
 #import model.data
 #import view.GUI
 
+
 from tkinter import CENTER
 from turtle import position
 import dash
@@ -16,7 +17,6 @@ SIDEBAR_STYLE = {
     "position": "fixed",
     "top": 0,
     "left": 0,
-
     "width": "90rem",
     "padding": "2rem 1rem",
     "text-align": "center",
