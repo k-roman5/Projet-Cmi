@@ -1,6 +1,8 @@
 #import model.data
 #import view.GUI
 
+from tkinter import CENTER
+from turtle import position
 import dash
 from dash import html
 from dash import dcc
@@ -14,10 +16,11 @@ SIDEBAR_STYLE = {
     "position": "fixed",
     "top": 0,
     "left": 0,
-    "bottom": 0,
-    "width": "16rem",
+
+    "width": "90rem",
     "padding": "2rem 1rem",
-    "background-color": "#f8f9fa",
+    "text-align": "center",
+    # "background-color": "#f8f9fa",
 }
 
 # padding for the page content
@@ -37,9 +40,10 @@ sidebar = html.Div(
         dbc.Nav(
             [
                 dbc.NavLink("Histogramme", href="/", active="exact"),
-                dbc.NavLink("Tableur", href="/table", active="exact"),
+                dbc.NavLink("Tableur", href="/table",
+                            active="exact"),
             ],
-            vertical=True,
+            horizontal=True,
             pills=True,
         ),
     ],
