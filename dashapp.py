@@ -9,6 +9,7 @@ from dash import html
 from dash import dcc
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
+from xarray import align
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SKETCHY])
 
@@ -20,7 +21,7 @@ SIDEBAR_STYLE = {
     "width": "90rem",
     "padding": "2rem 1rem",
     "text-align": "center",
-    # "background-color": "#f8f9fa",
+    "background-color": "#f8f9fa",
 }
 
 # padding for the page content
@@ -31,20 +32,22 @@ CONTENT_STYLE = {
 }
 
 sidebar = html.Div(
-    [
-        html.H2("CMI ISI", className="display-4"),
+    [dbc.NavLink("logo-design-260nw-1759587047.jpg", href="/",
+                 active="exact"),
+        html.H2("CMI ISI", className="display-4",),
         html.P(
             u"Forêt Pyrénnées", className="lead"
-        ),
+    ),
         dbc.Nav(
             [
-                dbc.NavLink("Histogramme", href="/", active="exact"),
+                dbc.NavLink("Histogramme", href="/histogramme",
+                            active="exact"),
                 dbc.NavLink("Tableur", href="/table",
                             active="exact"),
             ],
             horizontal=True,
             pills=True,
-        ),
+    ),
     ],
     style=SIDEBAR_STYLE,
 )
@@ -56,6 +59,39 @@ app.layout = html.Div([
     sidebar,
     content,
 ])
+
+
+@app.callback(
+    Output("page-content", "children"),
+    [Input("url", "pathname")]
+)
+def render_page_content(pathname):
+    # Bar Chart
+    if pathname == "/":
+        return [
+            html.Div(
+                html.H1('welcome', id='table_view',
+                        style={'textAlign': 'left'}),
+            )]
+    elif pathname == "/histogramme":
+        #dropdown = view.GUI.build_dropdown_menu(model.data.get_unique_values())
+        #graph = view.GUI.init_graph()
+        return [
+            html.Div([
+
+                #dropdown, graph
+            ])
+        ]
+
+    # Table
+    elif pathname == "/table":
+        # fetch client info
+        return [
+            html.H1('Données forêt pyrénnées (tableur)', id='table_view',
+                    style={'textAlign': 'left'}),
+            #html.Div(id='data_table', children=view.GUI.data_table(model.data.df))
+        ]
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
