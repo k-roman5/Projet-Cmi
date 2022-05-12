@@ -25,10 +25,16 @@ with open(r'Repro_IS.csv') as csvfile:
             cursor.execute(
                 'INSERT INTO t_Station VALUES (?,?,?)', new_station)  # insert the new station
             print("station insérée")
-        else:
-            print("station existante")
 
-        connexion.commit()  # commit the changes
+        if res_arbre.fetchone() == None:  # if the arbre doesn't exist
+            print("l'arbre {} n'existe pas".format(row['code']))
+            new_arbre = (row['code'], row['VH'], row['H'],
+                         row['SH'])  # create a new arbre
+            if row['VH'] != None:  # if the arbre has a VH
+                cursor.execute(
+                    'INSERT INTO t_arbre VALUES (?,?,?,?)', new_arbre)  # insert the new arbre
+                print("arbre insérée")
+    connexion.commit()  # commit the changes
 
 
 connexion.close()
