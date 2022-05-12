@@ -33,7 +33,6 @@ CONTENT_STYLE = {
 sidebar = html.Div(
     [
         html.H2("CMI ISI", className="display-4"),
-        html.Hr(),
         html.P(
             u"Forêt Pyrénnées", className="lead"
         ),
