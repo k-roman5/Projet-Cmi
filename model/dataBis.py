@@ -1,6 +1,3 @@
-from asyncio.windows_events import NULL
-from operator import index
-from queue import Empty
 import sqlite3
 import csv
 
@@ -59,20 +56,16 @@ with open(r'Repro_IS.csv') as csvfile:
     reader = csv.DictReader(csvfile, delimiter=';')
 
     def STATIONFUN(chosenrow1):
-        req_id_station = 'SELECT * FROM station WHERE id_s = (SELECT MAX(id_s) FROM station)'
         req_station = 'SELECT * FROM station WHERE nom = "{}"'.format(
             chosenrow1['Station'])
 
         res_station = cursor.execute(req_station)
-        res_is_station = cursor.execute(req_id_station)
-        print(res_is_station.fetchone())
 
         if res_station.fetchone() is None:
-            new_station = (cursor.lastrowid, chosenrow1['Station'],
+            new_station = (chosenrow1['Station'],
                            chosenrow1['Range'], chosenrow1['Altitude'])
             cursor.execute(
-                'INSERT INTO station VALUES (?,?,?,?)', new_station)  # insert the new station
-    connexion.commit()
+                'INSERT INTO station (nom, range, altitude) VALUES (?,?,?)', new_station)  # insert the new station
 
     def TREEFUN(chosenrow2):
         req_arbre = 'SELECT * FROM arbre WHERE code = "{}"'.format(
@@ -80,13 +73,11 @@ with open(r'Repro_IS.csv') as csvfile:
         res_arbre = cursor.execute(req_arbre)  # recherche de l'arbre
 
         if res_arbre.fetchone() == None:  # if the arbre doesn't exist
-            print("l'arbre {} n'existe pas".format(chosenrow2['code']))
-            new_arbre = (cursor.lastrowid, chosenrow2['code'], chosenrow2['VH'], chosenrow2['H'],
+            new_arbre = (chosenrow2['code'], chosenrow2['VH'], chosenrow2['H'],
                          chosenrow2['SH'])  # create a new arbre
             if row['VH'] != None:  # if the arbre has a VH
                 cursor.execute(
-                    'INSERT INTO arbre VALUES (?,?,?,?,?)', new_arbre)  # insert the new arbre
-                print("arbre insérée")
+                    'INSERT INTO arbre (code,VH,H,SH) VALUES (?,?,?,?)', new_arbre)  # insert the new arbre
 
     def VELLEYFUN(chosenrow3):
         req_vallee = 'SELECT * FROM vallee WHERE valley = "{}"'.format(
@@ -95,15 +86,15 @@ with open(r'Repro_IS.csv') as csvfile:
 
         if res_vallee.fetchone() == None:  # if the valley doesn't exist
             # create a new vallee
-            new_vallee = (cursor.lastrowid, chosenrow3['Valley'])
-            cursor.execute('INSERT INTO vallee VALUES (?,?)',
-                           new_vallee)  # insert the new valley
+            new_vallee = (chosenrow3['Valley'])
+            cursor.execute('INSERT INTO vallee (valley) VALUES (?)',
+                           [new_vallee])  # insert the new valley
 
     def RECOLTEFUN(chosenrow4):
-        new_recolte = (cursor.lastrowid+1, chosenrow4['harv_num'], chosenrow4['DD'], chosenrow4['harv'], chosenrow4['Year'], chosenrow4['Date'], chosenrow4['Ntot1'], chosenrow4['Ntot'],
-                       chosenrow4['Mtot'], chosenrow4['oneacorn'], chosenrow4['tot_Germ'], chosenrow4['M_Germ'], chosenrow4['N_Germ'], chosenrow4['rate_Germ'],)  # create a new "recolte"
+        new_recolte = (chosenrow4['harv_num'], chosenrow4['DD'], chosenrow4['harv'], chosenrow4['Year'], chosenrow4['Date'], chosenrow4['Ntot1'], chosenrow4['Ntot'],
+                       chosenrow4['Mtot'], chosenrow4['oneacorn'], chosenrow4['tot_Germ'], chosenrow4['M_Germ'], chosenrow4['N_Germ'], chosenrow4['rate_Germ'])  # create a new "recolte"
         cursor.execute(
-            'INSERT INTO recolte VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)', new_recolte)  # insert the new "recolte"
+            'INSERT INTO recolte (harv_num, DD, harv, Year, Date, Ntot1, Ntot, Mtot, oneacorn, tot_Germ, M_Germ, N_Germ, rate_Germ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', new_recolte)  # insert the new "recolte"
 
     def TREENONEFUN():
         req_arbre_none = 'DELETE FROM arbre WHERE VH == NULL'
@@ -111,10 +102,10 @@ with open(r'Repro_IS.csv') as csvfile:
 
     for row in reader:
         STATIONFUN(row)
-       # TREEFUN(row)
-       # TREENONEFUN()
-    # VELLEYFUN(row)
-       # RECOLTEFUN(row)
+        TREEFUN(row)
+        # TREENONEFUN()
+        VELLEYFUN(row)
+        RECOLTEFUN(row)
 
         connexion.commit()
 
