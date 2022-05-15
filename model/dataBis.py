@@ -13,7 +13,9 @@ id_a INTEGER PRIMARY KEY AUTOINCREMENT,
 code TEXT NOT NULL,
 VH REAL,
 H REAL,
-SH REAL
+SH REAL,
+s_id INTEGER,
+FOREIGN KEY (s_id) REFERENCES station(id_s)
 );
 ''')
 
@@ -22,7 +24,9 @@ CREATE TABLE IF NOT EXISTS station (
 id_s INTEGER PRIMARY KEY AUTOINCREMENT, 
 nom TEXT NOT NULL, 
 range INT NOT NULL,
-altitude INT NOT NULL
+altitude INT NOT NULL,
+v_id INTEGER,
+FOREIGN KEY (v_id) REFERENCES valley(id_v)
 );
 ''')
 
@@ -48,7 +52,9 @@ oneacorn REAL,
 tot_Germ REAL,
 M_Germ REAL,
 N_Germ REAL,
-rate_Germ REAL
+rate_Germ REAL,
+a_id INTEGER,
+FOREIGN KEY (a_id) REFERENCES arbre(id_a)
 );
 ''')
 
@@ -68,8 +74,10 @@ with open(r'Repro_IS.csv') as csvfile:
                 'INSERT INTO station (nom, range, altitude) VALUES (?,?,?)', new_station)  # insert the new station
 
     def TREEFUN(chosenrow2):
+
         req_arbre = 'SELECT * FROM arbre WHERE code = "{}"'.format(
             chosenrow2['code'])  # requete pour rechercher l'arbre
+
         res_arbre = cursor.execute(req_arbre)  # recherche de l'arbre
 
         if res_arbre.fetchone() == None:  # if the arbre doesn't exist
