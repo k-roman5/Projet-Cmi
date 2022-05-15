@@ -79,32 +79,36 @@ with open(r'Repro_IS.csv') as csvfile:
     def STATIONFUN(chosenrow1, id_v):
         req_station = 'SELECT * FROM station WHERE nom = "{}"'.format(
             chosenrow1['Station'])
+        res_station = cursor.execute(req_station).fetchone()
 
-        res_station = cursor.execute(req_station)
-
-        if res_station.fetchone() is None:
+        if res_station == None:
             new_station = (chosenrow1['Station'],
                            chosenrow1['Range'], chosenrow1['Altitude'], id_v)
             cursor.execute(
                 'INSERT INTO station (nom, range, altitude, v_id) VALUES (?,?,?,?)', new_station)  # insert the new station
+            return cursor.execute('SELECT MAX(id_s) FROM vallee').fetchone()[0]
+        return res_station[0]
 
-    def TREEFUN(chosenrow2):
-
+    def TREEFUN(chosenrow2, id_s):
         req_arbre = 'SELECT * FROM arbre WHERE code = "{}"'.format(
             chosenrow2['code'])  # requete pour rechercher l'arbre
 
-        res_arbre = cursor.execute(req_arbre)  # recherche de l'arbre
+        res_arbre = cursor.execute(
+            req_arbre).fetchone()  # recherche de l'arbre
 
-        if res_arbre.fetchone() == None:  # if the arbre doesn't exist
+        if res_arbre == None:  # if the arbre doesn't exist
             new_arbre = (chosenrow2['code'], chosenrow2['VH'], chosenrow2['H'],
-                         chosenrow2['SH'])  # create a new arbre
+                         chosenrow2['SH'], id_s)  # create a new arbre
             if row['VH'] != None:  # if the arbre has a VH
                 cursor.execute(
                     'INSERT INTO arbre (code,VH,H,SH) VALUES (?,?,?,?)', new_arbre)  # insert the new arbre
+                return cursor.execute('SELECT MAX(id_a) FROM vallee').fetchone()[0]
+        return res_arbre[0]
 
-    def RECOLTEFUN(chosenrow4):
+    def RECOLTEFUN(chosenrow4, id_a):
+
         new_recolte = (chosenrow4['harv_num'], chosenrow4['DD'], chosenrow4['harv'], chosenrow4['Year'], chosenrow4['Date'], chosenrow4['Ntot1'], chosenrow4['Ntot'],
-                       chosenrow4['Mtot'], chosenrow4['oneacorn'], chosenrow4['tot_Germ'], chosenrow4['M_Germ'], chosenrow4['N_Germ'], chosenrow4['rate_Germ'])  # create a new "recolte"
+                       chosenrow4['Mtot'], chosenrow4['oneacorn'], chosenrow4['tot_Germ'], chosenrow4['M_Germ'], chosenrow4['N_Germ'], chosenrow4['rate_Germ'], id_a)  # create a new "recolte"
         cursor.execute(
             'INSERT INTO recolte (harv_num, DD, harv, Year, Date, Ntot1, Ntot, Mtot, oneacorn, tot_Germ, M_Germ, N_Germ, rate_Germ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', new_recolte)  # insert the new "recolte"
 
@@ -114,10 +118,9 @@ with open(r'Repro_IS.csv') as csvfile:
 
     for row in reader:
         id_v = VELLEYFUN(row)
-        STATIONFUN(row, id_v)
-        TREEFUN(row)
-        # TREENONEFUN()
-        RECOLTEFUN(row)
+        id_s = STATIONFUN(row, id_v)
+        id_a = TREEFUN(row, id_s)
+        RECOLTEFUN(row, id_a)
 
         connexion.commit()
 
