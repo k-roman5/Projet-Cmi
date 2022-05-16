@@ -11,6 +11,8 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
 from xarray import align
 
+import base64
+
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SKETCHY])
 
 # styling the sidebar
@@ -30,9 +32,11 @@ CONTENT_STYLE = {
     "margin-right": "2rem",
     "padding": "2rem 1rem",
 }
+image_file_name = "simple-oak-tree-logo-design-260nw-1759587047.jpg"
+encoded_image = base64.b64encode(open(image_file_name, "rb").read())
 
 sidebar = html.Div(
-    [dbc.NavLink("logo-design-260nw-1759587047.jpg", href="/",
+    [dbc.NavLink(html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode())), href="/",
                  active="exact"),
         html.H2("CMI ISI", className="display-4",),
         html.P(
