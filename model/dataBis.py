@@ -40,7 +40,8 @@ FOREIGN KEY (s_id) REFERENCES station(id_s)
 
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS recolte (
-id_r INTEGER PRIMARY KEY AUTOINCREMENT, 
+id_r INTEGER PRIMARY KEY AUTOINCREMENT,
+recolte_ID TEXT,
 harv_num INT NOT NULL,
 DD INT NOT NULL,
 harv INT NOT NULL,
@@ -86,35 +87,34 @@ with open(r'Repro_IS.csv') as csvfile:
                            chosenrow1['Range'], chosenrow1['Altitude'], id_v)
             cursor.execute(
                 'INSERT INTO station (nom, range, altitude, v_id) VALUES (?,?,?,?)', new_station)  # insert the new station
-            return cursor.execute('SELECT MAX(id_s) FROM vallee').fetchone()[0]
+            return cursor.execute('SELECT MAX(id_s) FROM station').fetchone()[0]
         return res_station[0]
 
     def TREEFUN(chosenrow2, id_s):
         req_arbre = 'SELECT * FROM arbre WHERE code = "{}"'.format(
             chosenrow2['code'])  # requete pour rechercher l'arbre
-
         res_arbre = cursor.execute(
             req_arbre).fetchone()  # recherche de l'arbre
 
         if res_arbre == None:  # if the arbre doesn't exist
             new_arbre = (chosenrow2['code'], chosenrow2['VH'], chosenrow2['H'],
                          chosenrow2['SH'], id_s)  # create a new arbre
-            if row['VH'] != None:  # if the arbre has a VH
-                cursor.execute(
-                    'INSERT INTO arbre (code,VH,H,SH) VALUES (?,?,?,?)', new_arbre)  # insert the new arbre
-                return cursor.execute('SELECT MAX(id_a) FROM vallee').fetchone()[0]
+            cursor.execute(
+                'INSERT INTO arbre (code, VH, H, SH, s_id) VALUES (?,?,?,?,?)', new_arbre)  # insert the new arbre
+            return cursor.execute('SELECT MAX(id_a) FROM arbre').fetchone()[0]
         return res_arbre[0]
 
     def RECOLTEFUN(chosenrow4, id_a):
+        req_recolte = 'SELECT * FROM recolte WHERE recolte_ID = "{}"'.format(
+            chosenrow4['ID'])
+        res_recolte = cursor.execute(
+            req_recolte).fetchone()
 
-        new_recolte = (chosenrow4['harv_num'], chosenrow4['DD'], chosenrow4['harv'], chosenrow4['Year'], chosenrow4['Date'], chosenrow4['Ntot1'], chosenrow4['Ntot'],
-                       chosenrow4['Mtot'], chosenrow4['oneacorn'], chosenrow4['tot_Germ'], chosenrow4['M_Germ'], chosenrow4['N_Germ'], chosenrow4['rate_Germ'], id_a)  # create a new "recolte"
-        cursor.execute(
-            'INSERT INTO recolte (harv_num, DD, harv, Year, Date, Ntot1, Ntot, Mtot, oneacorn, tot_Germ, M_Germ, N_Germ, rate_Germ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', new_recolte)  # insert the new "recolte"
-
-    def TREENONEFUN():
-        req_arbre_none = 'DELETE FROM arbre WHERE VH == NULL'
-        res_arbre_none = cursor.execute(req_arbre_none)
+        if res_recolte == None:
+            new_recolte = (chosenrow4['ID'], chosenrow4['harv_num'], chosenrow4['DD'], chosenrow4['harv'], chosenrow4['Year'], chosenrow4['Date'], chosenrow4['Ntot1'], chosenrow4['Ntot'],
+                           chosenrow4['Mtot'], chosenrow4['oneacorn'], chosenrow4['tot_Germ'], chosenrow4['M_Germ'], chosenrow4['N_Germ'], chosenrow4['rate_Germ'], id_a)  # create a new "recolte"
+            cursor.execute(
+                'INSERT INTO recolte (recolte_ID,harv_num, DD, harv, Year, Date, Ntot1, Ntot, Mtot, oneacorn, tot_Germ, M_Germ, N_Germ, rate_Germ, a_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', new_recolte)  # insert the new "recolte"
 
     for row in reader:
         id_v = VELLEYFUN(row)
