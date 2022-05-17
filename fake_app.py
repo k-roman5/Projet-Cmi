@@ -1,19 +1,14 @@
-import model.data
-import view.GUI
+from ctypes import alignment
 
+from xarray import align
+import fake_GUI
+import fake_data
 
-from tkinter import CENTER
-from turtle import position
 import dash
 from dash import html
 from dash import dcc
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
-from xarray import align
-import plotly.figure_factory as ff
-import pandas as pd
-
-import base64
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SKETCHY])
 
@@ -44,13 +39,7 @@ sidebar = html.Div(
         ),
         dbc.Nav(
             [
-                dbc.NavLink("Histogramme", href="/", active="exact"),
-                dbc.NavLink("Tableur", href="/table", active="exact"),
                 dbc.NavLink("Sunburst", href="/sunburst", active="exact"),
-                dbc.NavLink("3D Coordinates & Scatter Plots",
-                            href="/3d_coordinates_scatter_plots", active="exact"),
-                dbc.NavLink("3D Coordinates & Scatter Matrix",
-                            href="/3d_coordinates_scatter_matrix", active="exact"),
             ],
             vertical=True,
             pills=True,
@@ -73,30 +62,33 @@ app.layout = html.Div([
     [Input("url", "pathname")]
 )
 def render_page_content(pathname):
-    # Bar Chart
-    if pathname == "/":
-        return [
-            html.Div(
-                html.H1('welcome', id='table_view',
-                        style={'textAlign': 'left'}),
-            )]
-    elif pathname == "/histogramme":
-        #dropdown = view.GUI.build_dropdown_menu(model.data.get_unique_values())
-        #graph = view.GUI.init_graph()
+
+    # Sunburst:
+    if pathname == "/sunburst":
+
+        '''dropdown = fake_GUI.build_dropdown_menu(
+            fake_data.get_unique_values())'''
+        '''range_slider = fake_GUI.build_range_slider(
+            fake_data.get_unique_values())'''
+
+        sunburst = fake_GUI.init_sunburst()
+
         return [
             html.Div([
+                html.H3("Représentation Sunburst de la quantité totale de glands produits par rapport à la masse moyenne d'un gland (g)",
+                        style={"margin-bottom": "0px", 'color': 'black'}),
+                html.H3(),
+                html.H5('Pour la période 2011-2020 pour les différentes vallées par rapport aux stations',
+                        style={"margin-top": "0px", 'color': 'black'}),
+                html.Hr(),
+
+                dcc.Graph(id="sunburst", figure=fake_GUI.build_sunburst(
+                    fake_data.extract_df1('Josbaig', [2012, 2016]))),
 
             ])
         ]
 
-    # Table
-    elif pathname == "/table":
-        # fetch client info
-        return [
-            html.H1('Données forêt pyrénnées (tableur)', id='table_view',
-                    style={'textAlign': 'left'}),
-            #html.Div(id='data_table', children=view.GUI.data_table(model.data.df))
-        ]
+    # Else
     else:
         return html.Div(
             [
@@ -105,6 +97,18 @@ def render_page_content(pathname):
                 html.P(f"The pathname {pathname} was not recognised..."),
             ]
         )
+
+
+# Sunburst
+@app.callback(
+    Output("sunburst", "figure"),
+    [Input("dropdown", "value"),
+     Input("range_slider", "value")])
+def update_sunburst(value_dropdown, value_range_slider):
+    print('saluuut')
+    sub_df, attributes = fake_data.extract_df1(
+        value_dropdown, yearVar=value_range_slider)
+    return fake_GUI.build_sunburst(sub_df, attributes)
 
 
 if __name__ == '__main__':
