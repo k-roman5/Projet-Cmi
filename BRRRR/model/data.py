@@ -27,7 +27,7 @@ def extract_df3(stations):
 '''
 
 
-def extract_df3(stations):
+def extract_df1(stations):
     df = pd.DataFrame()
     for station in stations:
         query = "SELECT station.nom, recolte.Ntot,recolte.Year FROM station JOIN arbre ON id_s=s_id JOIN recolte ON id_a=a_id  WHERE nom='{}'".format(
