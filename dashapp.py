@@ -124,19 +124,22 @@ def render_page_content(pathname):
 @ app.callback(
     Output("heatmap", "figure"),
     [Input("clickData", "gapminder")])
-def update_gapminder(imput_dropdown, imput_dropdown_2):
-    return GUI.build_gapminder(data.extract_df1(imput_dropdown), imput_dropdown_2)
+def update_heatmap(click):
+    if click is None:
+        return {}
+    click = click["points"][0]["x"]
+    return GUI.build_Heatmap(df_mask=data.extract_df1()['Year'] == 'click')
 
 
 @ app.callback(
-    Output("heatmap", "figure"),
+    Output("gapminder", "figure"),
     [Input("dropdown", "value"),
      Input("radioItems", "value")])
-def update_heatmap(imput_dropdown, imput_dropdown_2):
+def update_gapminder(imput_dropdown, imput_dropdown_2):
     if imput_dropdown_2 == "Ntot":
-        return GUI.build_Heatmap(data.extract_df1(imput_dropdown))
+        return GUI.build_gapminder(data.extract_df1(imput_dropdown))
     else:
-        return GUI.build_Heatmap2(data.extract_df1(imput_dropdown))
+        return GUI.build_gapminder2(data.extract_df1(imput_dropdown))
 
 
 if __name__ == '__main__':

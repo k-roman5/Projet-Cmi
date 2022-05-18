@@ -28,18 +28,21 @@ def build_radioItems():
                              })
 
 
-def init_scatter():
-    return dcc.Graph(id="scatter")
-
-
 def build_scatter(df):
     fig = px.scatter(df, x="VH", y="Ntot", color="nom",
                      marginal_x="histogram", marginal_y="rug", width=500, height=500, style={"margin": "-4px" "0px" "-4px"})
     return fig
 
 
-def build_gapminder(df, val):
-    fig = px.bar(df, x="Year", y=val,
+def build_gapminder(df):
+    fig = px.bar(df, x="Year", y="Ntot",
+                 hover_data=["Mtot", "VH"], color="nom",
+                 labels={"Ntot": "Quantité totale de glands produits", "oneacorn": "Masse moyenne d'un gland (g)"}, height=400)
+    return fig
+
+
+def build_gapminder2(df):
+    fig = px.bar(df, x="Year", y="oneacorn",
                  hover_data=["Mtot", "VH"], color="nom",
                  labels={"Ntot": "Quantité totale de glands produits", "oneacorn": "Masse moyenne d'un gland (g)"}, height=400)
     return fig
@@ -58,6 +61,7 @@ def build_Heatmap(df):
     return fig
 
 
+'''
 def build_Heatmap2(df):
     fig = go.Figure(data=go.Heatmap(
         z=df.oneacorn,
@@ -66,3 +70,4 @@ def build_Heatmap2(df):
         # texttemplate="%{df.oneacorn}",
         hoverongaps=False))
     return fig
+'''
