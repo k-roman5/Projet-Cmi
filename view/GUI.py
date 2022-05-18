@@ -24,26 +24,18 @@ def build_radioItems():
     return dcc.RadioItems(
         id="radioItems",
         options=[{"label": x, "value": x} for x in ["Ntot", "oneacorn"]],
-        value="Ntot", style={"margin": "0px" "0px" "-4px", "border-radius": "10px", "margin-left": "35rem", "border": "solid", "height": "30px", "width": "200px", "text-align": "center"
-                             })
+        value="Ntot", style={"margin": "0px" "0px" "-4px", "border-radius": "10px", "margin-left": "35rem", "border": "solid", "height": "30px", "width": "200px", "text-align": "center"})
 
 
 def build_scatter(df):
     fig = px.scatter(df, x="VH", y="Ntot", color="nom",
-                     marginal_x="histogram", marginal_y="rug", width=500, height=500, style={"margin": "-4px" "0px" "-4px"})
+                     marginal_x="histogram", marginal_y="rug", width=500, height=500)
     return fig
 
 
 def build_gapminder(df):
-    fig = px.bar(df, x="Year", y="Ntot",
-                 hover_data=["Mtot", "VH"], color="nom",
-                 labels={"Ntot": "Quantité totale de glands produits", "oneacorn": "Masse moyenne d'un gland (g)"}, height=400)
-    return fig
-
-
-def build_gapminder2(df):
-    fig = px.bar(df, x="Year", y="oneacorn",
-                 hover_data=["Mtot", "VH"], color="nom",
+    fig = px.bar(df, x="Year", y="Ntot", range_x=[2010, 2021],
+                 hover_data=["VH"], color="nom",
                  labels={"Ntot": "Quantité totale de glands produits", "oneacorn": "Masse moyenne d'un gland (g)"}, height=400)
     return fig
 
@@ -61,13 +53,34 @@ def build_Heatmap(df):
     return fig
 
 
-'''
 def build_Heatmap2(df):
     fig = go.Figure(data=go.Heatmap(
         z=df.oneacorn,
         x=df.Year,
         y=df.nom,
-        # texttemplate="%{df.oneacorn}",
         hoverongaps=False))
+    fig.update_layout(
+        autosize=False,
+        width=500,
+        height=500)
     return fig
-'''
+
+
+def build_Box_Plot(df):
+    fig = go.Figure(data=go.Box(
+        y=df.H,
+        boxpoints='all',
+        jitter=0.3,
+        pointpos=-1.8))
+    return fig
+
+
+def build_sunburst(df):
+    fig = px.pie(df, values='Ntot', names='nom', color='nom')
+    return fig
+
+
+''''def build_sunburst(df):
+    fig = px.sunburst(df, path=['valley', 'nom'], values='Ntot',
+                      color='nom')
+    return fig'''

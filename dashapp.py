@@ -49,12 +49,10 @@ sidebar = html.Div(
             [
                 dbc.NavLink("Accueil", href="/",
                             active="exact"),
-                dbc.NavLink("Visualisations", href="/visualisations",
+                dbc.NavLink("Visualisations méthode 1", href="/visualisations",
                             active="exact"),
-                dbc.NavLink("Tableur", href="/table",
-                            active="exact"),
-                dbc.NavLink("Insertion", href="/insertion",
-                            active="exact"),
+                dbc.NavLink("Visualisations méthode 2", href="/visualisations2",
+                            active="exact")
             ],
             horizontal=True,
             pills=True,
@@ -80,7 +78,9 @@ def render_page_content(pathname):
     if pathname == "/":
         return [
             html.Hr(),
-            html.H1('welcome', style={'textAlign': 'left'}),
+
+            html.P('Projet realisé par Karina Roman et Younes Bouhoreira, etudiants en Cmi isi L2.   Mai-Avril 2022', style={
+                'textAlign': 'left'}),
             html.Hr(),
         ]
 
@@ -88,27 +88,27 @@ def render_page_content(pathname):
         dropdown = GUI.build_dropdown_menu(data.dropdown_menu())
         radioItems = GUI.build_radioItems()
         heatmap = dcc.Graph(id="heatmap")
-        #scatter = dcc.Graph(id="scatter")
+        # scatter = dcc.Graph(id="scatter")
         gapminder = dcc.Graph(id="gapminder")
 
         return [
-            html.Span([
 
-                dropdown, html.Hr(), radioItems, html.Hr(), gapminder, heatmap
-            ])
+            dropdown, html.Hr(), radioItems, html.Hr(),
+            html.Div([gapminder], style={
+                'display': 'inline-block'}),
+
+            html.Div([heatmap], style={
+                'display': 'inline-block'})
+
         ]
 
     # Table
-    elif pathname == "/table":
+    elif pathname == "/visualisations2":
+        dropdown = GUI.build_dropdown_menu(data.dropdown_menu())
+        sunburst = dcc.Graph(id="sunburst")
+        scatter = dcc.Graph(id="scatter")
         return [
-            html.H1('Données forêt pyrénnées (tableur)', id='table_view',
-                    style={'textAlign': 'left'}),
-        ]
-
-    elif pathname == "/insertion":
-        return [
-            html.H1('Données forêt pyrénnées (tableur)', id='table_view',
-                    style={'textAlign': 'left'}),
+            dropdown, html.Hr(), sunburst, scatter
         ]
 
     else:
@@ -122,24 +122,40 @@ def render_page_content(pathname):
 
 
 @ app.callback(
-    Output("heatmap", "figure"),
-    [Input("clickData", "gapminder")])
-def update_heatmap(click):
-    if click is None:
-        return {}
-    click = click["points"][0]["x"]
-    return GUI.build_Heatmap(df_mask=data.extract_df1()['Year'] == 'click')
-
-
-@ app.callback(
     Output("gapminder", "figure"),
     [Input("dropdown", "value"),
      Input("radioItems", "value")])
 def update_gapminder(imput_dropdown, imput_dropdown_2):
+    return GUI.build_scatter(data.extract_df1(imput_dropdown))
+
+
+@ app.callback(
+    Output("heatmap", "figure"),
+    [Input("dropdown", "value"),
+     Input("radioItems", "value")]
+)
+def update_heatmap(imput_dropdown, imput_dropdown_2):
     if imput_dropdown_2 == "Ntot":
-        return GUI.build_gapminder(data.extract_df1(imput_dropdown))
+        return GUI.build_Heatmap(data.extract_df1(imput_dropdown))
     else:
-        return GUI.build_gapminder2(data.extract_df1(imput_dropdown))
+        return GUI.build_Heatmap2(data.extract_df1(imput_dropdown))
+
+
+@ app.callback(
+    Output("sunburst", "figure"),
+    [Input("dropdown", "value")])
+def update_Box_Plot(value):
+    return GUI.build_sunburst(data.extract_df1(value))
+
+
+@ app.callback(
+    Output("scatter", "figure"),
+    [Input("sunburst", "clickData")])
+def update_heatmap(click):
+    if click is None:
+        return {}
+    click = click["points"][0]["x"]
+    return GUI.build_scatter(df_mask=data.extract_df3()['nom'] == 'click')
 
 
 if __name__ == '__main__':
