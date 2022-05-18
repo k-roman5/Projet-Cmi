@@ -22,9 +22,9 @@ SIDEBAR_STYLE = {
     "position": "fixed",
     "top": 0,
     "left": 0,
-    "bottom": 0,
-    "width": "16rem",
+    "width": "90rem",
     "padding": "2rem 1rem",
+    "text-align": "center",
     "background-color": "#f8f9fa",
 }
 
@@ -34,27 +34,30 @@ CONTENT_STYLE = {
     "margin-right": "2rem",
     "padding": "2rem 1rem",
 }
+image_file_name = "simple-oak-tree-logo-design-260nw-1759587047.jpg"
+encoded_image = base64.b64encode(open(image_file_name, "rb").read())
 
 sidebar = html.Div(
-    [
-        html.H2("Karina Roman", className="display-4"),
-        html.Hr(),
+    [dbc.NavLink(html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode())), href="/",
+                 active="exact"),
+        html.H2("CMI ISI", className="display-4",),
         html.P(
             u"Forêt Pyrénnées", className="lead"
-        ),
+    ),
         dbc.Nav(
             [
-                dbc.NavLink("Histogramme", href="/", active="exact"),
-                dbc.NavLink("Tableur", href="/table", active="exact"),
-                dbc.NavLink("Sunburst", href="/sunburst", active="exact"),
-                dbc.NavLink("3D Coordinates & Scatter Plots",
-                            href="/3d_coordinates_scatter_plots", active="exact"),
-                dbc.NavLink("3D Coordinates & Scatter Matrix",
-                            href="/3d_coordinates_scatter_matrix", active="exact"),
+                dbc.NavLink("Accueil", href="/",
+                            active="exact"),
+                dbc.NavLink("Visualisations", href="/visualisations",
+                            active="exact"),
+                dbc.NavLink("Tableur", href="/table",
+                            active="exact"),
+                dbc.NavLink("Insertion", href="/insertion",
+                            active="exact"),
             ],
-            vertical=True,
+            horizontal=True,
             pills=True,
-        ),
+    ),
     ],
     style=SIDEBAR_STYLE,
 )
@@ -80,7 +83,8 @@ def render_page_content(pathname):
                 html.H1('welcome', id='table_view',
                         style={'textAlign': 'left'}),
             )]
-    elif pathname == "/histogramme":
+
+    elif pathname == "/visualisations":
         #dropdown = view.GUI.build_dropdown_menu(model.data.get_unique_values())
         #graph = view.GUI.init_graph()
         return [
@@ -97,6 +101,15 @@ def render_page_content(pathname):
                     style={'textAlign': 'left'}),
             #html.Div(id='data_table', children=view.GUI.data_table(model.data.df))
         ]
+
+    elif pathname == "/insertion":
+        # fetch client info
+        return [
+            html.H1('Données forêt pyrénnées (tableur)', id='table_view',
+                    style={'textAlign': 'left'}),
+            #html.Div(id='data_table', children=view.GUI.data_table(model.data.df))
+        ]
+
     else:
         return html.Div(
             [

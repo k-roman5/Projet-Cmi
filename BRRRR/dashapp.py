@@ -6,7 +6,7 @@ from dash import html
 from dash import dcc
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output
-from matplotlib.pyplot import figure
+
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.PULSE])
 
