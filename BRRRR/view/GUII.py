@@ -34,7 +34,7 @@ def init_sunburst():
 
 def build_Heatmap(df):
     fig = go.Figure(data=go.Heatmap(
-        z=df.Ntot,
+        z=df.VH,
         x=df.Year,
         y=df.nom,
         hoverongaps=False))

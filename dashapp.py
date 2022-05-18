@@ -15,7 +15,7 @@ import pandas as pd
 
 import base64
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SKETCHY])
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SOLAR])
 
 # styling the sidebar
 SIDEBAR_STYLE = {
@@ -34,16 +34,15 @@ CONTENT_STYLE = {
     "margin-right": "2rem",
     "padding": "2rem 1rem",
 }
-image_file_name = "simple-oak-tree-logo-design-260nw-1759587047.jpg"
-encoded_image = base64.b64encode(open(image_file_name, "rb").read())
+
+image_filename = 'black_oak.png'  # replace with your own image
+encoded_image = base64.b64encode(open(image_filename, 'rb').read())
 
 sidebar = html.Div(
     [dbc.NavLink(html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode())), href="/",
                  active="exact"),
-        html.H2("CMI ISI", className="display-4",),
-        html.P(
-            u"Forêt Pyrénnées", className="lead"
-    ),
+        html.H2("Forêt Pyrénnées", className="display-4",),
+
         dbc.Nav(
             [
                 dbc.NavLink("Accueil", href="/",
