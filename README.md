@@ -46,9 +46,13 @@ Et la dernière est un gapminder qui montre la quantité totale de gland produit
 
 Les deux première dépendent d'un dropdown contenant les stations et de deux boutons permetant de faire un choix entre Ntot ou oneacrom
 
-Nous avons essayer de relier les visualisation de telle sort à ce qu'en cliquant sur une années du scatter, cela selectionne aussi la même années sur le heatmap grave au callback 'ClickData'. (Les affichages prennent un peu de temps)
+![unknown](https://user-images.githubusercontent.com/99172326/169162826-56d19694-a1f5-4b8b-836c-643fb11384ce.png)
 
 ![unknown](https://user-images.githubusercontent.com/99172326/169162086-8497ca0a-163c-48a3-a7db-22402dc90009.png)
+
+Nous avons essayer de relier les visualisation de telle sort à ce qu'en cliquant sur une années du scatter, cela selectionne aussi la même années sur le heatmap grave au callback 'ClickData'. (Les affichages prennent un peu de temps)
+
+![unknown](https://user-images.githubusercontent.com/99172326/169162927-4adeb75a-2d25-4ac7-9b79-0d3a9d9329fd.png)
 
 Les deux dernières dépendent aussi d'un dropdown contenant les stations.
 
