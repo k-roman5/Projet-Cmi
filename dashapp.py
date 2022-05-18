@@ -81,7 +81,7 @@ def render_page_content(pathname):
 
             html.P('Projet realisé par Karina Roman et Younes Bouhoreira, etudiants en Cmi isi L2.   Mai-Avril 2022', style={
                 'textAlign': 'left'}),
-            html.Hr(),
+            html.Hr('Nous voulions remercier notre professeur Mr. MELANCON pour nous avoir accompagnées tout au long du semestre et de nous avoir aidées à la réalisation de notre projet.'),
         ]
 
     elif pathname == "/visualisations":
