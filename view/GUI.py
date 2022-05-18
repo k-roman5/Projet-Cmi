@@ -75,12 +75,6 @@ def build_Box_Plot(df):
     return fig
 
 
-def build_sunburst(df):
+def build_pie(df):
     fig = px.pie(df, values='Ntot', names='nom', color='nom')
     return fig
-
-
-''''def build_sunburst(df):
-    fig = px.sunburst(df, path=['valley', 'nom'], values='Ntot',
-                      color='nom')
-    return fig'''

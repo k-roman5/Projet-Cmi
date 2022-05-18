@@ -105,10 +105,10 @@ def render_page_content(pathname):
     # Table
     elif pathname == "/visualisations2":
         dropdown = GUI.build_dropdown_menu(data.dropdown_menu())
-        sunburst = dcc.Graph(id="sunburst")
+        pie = dcc.Graph(id="pie")
         scatter = dcc.Graph(id="scatter")
         return [
-            dropdown, html.Hr(), sunburst, scatter
+            dropdown, html.Hr(), pie, scatter
         ]
 
     else:
@@ -142,15 +142,15 @@ def update_heatmap(imput_dropdown, imput_dropdown_2):
 
 
 @ app.callback(
-    Output("sunburst", "figure"),
+    Output("pie", "figure"),
     [Input("dropdown", "value")])
 def update_Box_Plot(value):
-    return GUI.build_sunburst(data.extract_df1(value))
+    return GUI.build_pie(data.extract_df1(value))
 
 
 @ app.callback(
     Output("scatter", "figure"),
-    [Input("sunburst", "clickData")])
+    [Input("pie", "clickData")])
 def update_heatmap(click):
     if click is None:
         return {}
