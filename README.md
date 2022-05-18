@@ -5,23 +5,23 @@
 
 ### Base de donnée:
 
-Nous avons commencer par créé les quatres tables (vallee, station, arbre, recolte) qui constitue notre base de donné Repro_IS.
+Nous avons commencé par créer les quatre tables (vallee, station, arbre, recolte) qui constituent notre base de données Repro_IS.
 
-Pour ce faire nous avons utilisé les requêtes spécifique à la création de table.
+Pour ce faire, nous avons utilisé les requêtes spécifiques à la création de table.
 
-Voici un exemple ci-dessous:
+Voici un exemple ci-dessous :
 
 ![unknown](https://user-images.githubusercontent.com/99172326/169158943-f6f333e0-d029-4c02-9926-30d8ad4dae39.png)
 
-Ensuite nous avons pour chacune des tables, completer, à l'aide d'un fonction qui rentre les colonnes naicessaire.
+Ensuite, nous avons pour chacune des tables, compléter, à l'aide d'une fonction qui rentre les colonnes nécessaires.
 
-Pour plusieures tables nous voulions rentrer des valeurs unique comme par exemple la table 'vallee' avec la colonne 'valley'
+Pour plusieurs tables nous voulions rentrer des valeurs unique comme par exemple la table 'vallee' avec la colonne 'valley'
 
-Pour ce faire nous somme passé par une requête qui est dans notre exemple'req_vallee'qui nous permet d'évaluer si la valeur lu sur csv est déjà présente dans la table ou non.
+Pour ce faire, nous sommes passées par une requête qui est dans notre exemple'req_vallee'qui nous permet d'évaluer si la valeur lue sur csv est déjà présente dans la table ou non.
 
-Ensuite chacune de ces fonction sont mis dans une boucle 'for' qui permet de parcourir toutes les lignes du csv
+Ensuite, chacune de ces fonctions est mise dans une boucle 'for' qui permet de parcourir toutes les lignes du csv
 
-Voici un expemple ci-dessous de ces deux etapes:
+Voici un exemple ci-dessous de ces deux étapes :
 
 ![unknown](https://user-images.githubusercontent.com/99172326/169159043-6815bdcb-3ac3-4024-8b32-bfabea4f9cc3.png)
 
@@ -29,22 +29,22 @@ Voici un expemple ci-dessous de ces deux etapes:
 
 ![unknown](https://user-images.githubusercontent.com/99172326/169159366-1d54f270-1851-4be4-bfa6-60f848ee25c0.png)
 
-Une fois ces étapes temriner nous nous retrouvons avec un base de données qui nous utiliserons par la suite.
+Une fois ces étapes terminées, nous nous retrouvons avec une base de données qui nous utiliserons par la suite.
 
 # dashapp
 
-Nous avons réalisé quatre réprensentation. La première étant un heatmap qui montre sous forme d'intensité de couleur la quantité totale de gland produit(Ntot) ou la masse moyenne d'un gland(oneacorn) selon la seléction par station sélectionées, par année. 
+Nous avons réalisé quatre représentations. La première étant un heatmap qui montre sous forme d'intensité de couleur la quantité totale de gland produit (Ntot) ou la masse moyenne d'un gland (oneacorn) selon la sélection par station sélectionner, par année.
 
 
-La deuxième est un scatter qui montre la quantité totale de gland produit(Ntot) par station sélectioné, par rapport au volume du houppier(VH) de chaque arbre.
+La deuxième est un scatter qui montre la quantité totale de gland produit (Ntot) par station sélectionné, par rapport au volume du houppier (VH) de chaque arbre.
 
 
-La troisième est un pie chart qui permet de voir la quantité totale de gland produit(Ntot) par station sélectioné.
+La troisième est un pie chart qui permet de voir la quantité totale de gland produit (Ntot) par station sélectionné.
 
-Et la dernière est un gapminder qui montre la quantité totale de gland produit(Ntot) par station par années.
+Et la dernière est un gapminder qui montre la quantité totale de gland produit (Ntot) par station par années.
 
 
-Les deux première dépendent d'un dropdown contenant les stations et de deux boutons permetant de faire un choix entre Ntot ou oneacrom
+Les deux première dépendent d'un dropdown contenant les stations et de deux boutons permettant de faire un choix entre Ntot ou oneacrom
 
 ![unknown](https://user-images.githubusercontent.com/99172326/169162826-56d19694-a1f5-4b8b-836c-643fb11384ce.png)
 
@@ -58,3 +58,4 @@ Les deux dernières dépendent aussi d'un dropdown contenant les stations.
 
 Nous avons essayer de crée un onglet tables et insertion permetant respectivement d'afficher nos tables et de rajouter des mesures aux tables de notre base de données.
 
+La pauvreté de nos visualiation s'éxplique par une quantité de temps mal gérer passer des visualisations comme par exemple un displot qui dépent de 'plotly.graph_objects' qui requiere plus d'atention et de rigeure.
