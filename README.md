@@ -50,12 +50,12 @@ Les deux première dépendent d'un dropdown contenant les stations et de deux bo
 
 ![unknown](https://user-images.githubusercontent.com/99172326/169162086-8497ca0a-163c-48a3-a7db-22402dc90009.png)
 
-Nous avons essayer de relier les visualisation de telle sort à ce qu'en cliquant sur une années du scatter, cela selectionne aussi la même années sur le heatmap grave au callback 'ClickData'. (Les affichages prennent un peu de temps)
+Nous avons essayé de relier les visualisations de tel sort à ce qu'en cliquant sur une année du scatter, cela sélectionné aussi la même année sur le heatmap grave au callback 'ClickData'. (Les affichages prennent un peu de temps.)
 
 ![unknown](https://user-images.githubusercontent.com/99172326/169162927-4adeb75a-2d25-4ac7-9b79-0d3a9d9329fd.png)
 
 Les deux dernières dépendent aussi d'un dropdown contenant les stations.
 
-Nous avons essayer de crée un onglet tables et insertion permetant respectivement d'afficher nos tables et de rajouter des mesures aux tables de notre base de données.
+Nous avons essayé de créer un onglet tables et insertion permettant respectivement d'afficher nos tables et de rajouter des mesures aux tables de notre base de données.
 
-La pauvreté de nos visualiation s'éxplique par une quantité de temps mal gérer passer des visualisations comme par exemple un displot qui dépent de 'plotly.graph_objects' qui requiere plus d'atention et de rigeure.
+La pauvreté de nos visualisations s'explique par une quantité de temps mal géré passer des visualisations comme par exemple un displot qui dépend de 'plotly.graph_objects' qui requière plus d'attention et de rigueur.
