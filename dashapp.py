@@ -1,5 +1,6 @@
-import model.data
-import view.GUI
+import model.data as data
+import model.data_db as data_db
+import view.GUI as GUI
 
 
 from tkinter import CENTER
@@ -17,9 +18,9 @@ import base64
 
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.SOLAR])
 
+
 # styling the sidebar
 SIDEBAR_STYLE = {
-    "position": "fixed",
     "top": 0,
     "left": 0,
     "width": "90rem",
@@ -30,7 +31,7 @@ SIDEBAR_STYLE = {
 
 # padding for the page content
 CONTENT_STYLE = {
-    "margin-left": "18rem",
+    "margin-left": "4rem",
     "margin-right": "2rem",
     "padding": "2rem 1rem",
 }
@@ -39,9 +40,10 @@ image_filename = 'black_oak.png'  # replace with your own image
 encoded_image = base64.b64encode(open(image_filename, 'rb').read())
 
 sidebar = html.Div(
-    [dbc.NavLink(html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode())), href="/",
-                 active="exact"),
-        html.H2("Forêt Pyrénnées", className="display-4",),
+    [dbc.NavLink(html.Img(src='data:image/png;base64,{}'.format(encoded_image.decode()), style={'height': '80px', 'width': '80px'}), href="/",
+                 active="exact", style={'height': '0px', 'width': '1000px'}),
+        html.H1("Forêt Pyrénnées", className="display-4",
+                style={"width": "92rem"}),
 
         dbc.Nav(
             [
@@ -75,38 +77,35 @@ app.layout = html.Div([
     [Input("url", "pathname")]
 )
 def render_page_content(pathname):
-    # Bar Chart
     if pathname == "/":
         return [
-            html.Div(
-                html.H1('welcome', id='table_view',
-                        style={'textAlign': 'left'}),
-            )]
+            html.H1('welcome', style={'textAlign': 'left'}),
+        ]
 
     elif pathname == "/visualisations":
-        #dropdown = view.GUI.build_dropdown_menu(model.data.get_unique_values())
-        #graph = view.GUI.init_graph()
-        return [
-            html.Div([
+        dropdown = GUI.build_dropdown_menu(data.dropdown_menu())
+        radioItems = GUI.build_radioItems()
+        heatmap = dcc.Graph(id="heatmap")
+        scatter = dcc.Graph(id="scatter")
 
+        return [
+            html.Span([
+
+                dropdown, radioItems, scatter, heatmap
             ])
         ]
 
     # Table
     elif pathname == "/table":
-        # fetch client info
         return [
             html.H1('Données forêt pyrénnées (tableur)', id='table_view',
                     style={'textAlign': 'left'}),
-            #html.Div(id='data_table', children=view.GUI.data_table(model.data.df))
         ]
 
     elif pathname == "/insertion":
-        # fetch client info
         return [
             html.H1('Données forêt pyrénnées (tableur)', id='table_view',
                     style={'textAlign': 'left'}),
-            #html.Div(id='data_table', children=view.GUI.data_table(model.data.df))
         ]
 
     else:
@@ -117,6 +116,22 @@ def render_page_content(pathname):
                 html.P(f"The pathname {pathname} was not recognised..."),
             ]
         )
+
+
+@ app.callback(
+    Output("scatter", "figure"),
+    Output("heatmap", "figure"),
+    [Input("dropdown", "value"),
+     Input("radioItems", "value")])
+def update_heatmap(imput_dropdown, imput_dropdown_2):
+    if imput_dropdown_2 == "Ntot":
+        return GUI.build_Heatmap(data.extract_df1(imput_dropdown))
+    else:
+        return GUI.build_Heatmap2(data.extract_df1(imput_dropdown))
+
+
+def update_heatmap(imput_dropdown):
+    return GUI.build_scatter(data.extract_df1(imput_dropdown))
 
 
 if __name__ == '__main__':

@@ -1,37 +1,25 @@
+import pandas as pd
 import sqlite3
-import csv
-# CRUD : create, read, update, delete
 
-connexion = sqlite3.connect('table_repro_IS_test.db')
-cursor = connexion.cursor()
-
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS station (
-id_s INTEGER PRIMARY KEY AUTOINCREMENT, 
-nom TEXT NOT NULL, 
-range INT NOT NULL,
-altitude INT NOT NULL
-);
-''')
+connexion = sqlite3.connect('table_repro_IS.db', check_same_thread=False)
 
 
-with open(r'Repro_IS.csv') as csvfile:
-    reader = csv.DictReader(csvfile, delimiter=';')
+def extract_df1(stations):
+    df = pd.DataFrame()
+    for station in stations:
+        query = "SELECT station.nom, recolte.Ntot, recolte.Year,arbre.VH, recolte.oneacorn FROM station JOIN arbre ON id_s=s_id JOIN recolte ON id_a=a_id  WHERE nom='{}'".format(
+            station)
+        df = pd.concat([df, pd.read_sql(query, connexion)])
+    return df
 
-    def STATIONFUN(chosenrow1):
-        req_station = 'SELECT * FROM station WHERE nom = "{}"'.format(
-            chosenrow1['Station'])
 
-        res_station = cursor.execute(req_station)
+def extract_df2():
+    query = "SELECT station.nom, recolte.Year,recolte.Ntot,arbre.VH FROM station JOIN arbre ON id_s=s_id JOIN recolte ON id_a=a_id"
+    df = pd.read_sql(query, connexion)
+    return df
 
-        if res_station.fetchone() is None:
-            new_station = (chosenrow1['Station'],
-                           chosenrow1['Range'], chosenrow1['Altitude'])
-            cursor.execute(
-                'INSERT INTO station (nom, range, altitude) VALUES (?,?,?)', new_station)  # insert the new station
 
-    for row in reader:
-        STATIONFUN(row)
-    connexion.commit()  # commit the changes
-
-connexion.close()
+def dropdown_menu():
+    query = "SELECT DISTINCT nom FROM station"
+    df = pd.read_sql(query, connexion)
+    return df.nom.tolist()
