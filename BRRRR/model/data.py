@@ -36,6 +36,12 @@ def extract_df1(stations):
     return df
 
 
+def extract_df2():
+    query = "SELECT station.nom, recolte.Year,recolte.Ntot,arbre.VH FROM station JOIN arbre ON id_s=s_id JOIN recolte ON id_a=a_id"
+    df = pd.read_sql(query, connexion)
+    return df
+
+
 def dropdown_menu():
     query = "SELECT DISTINCT nom FROM station"
     df = pd.read_sql(query, connexion)
