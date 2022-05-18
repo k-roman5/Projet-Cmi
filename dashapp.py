@@ -79,19 +79,22 @@ app.layout = html.Div([
 def render_page_content(pathname):
     if pathname == "/":
         return [
+            html.Hr(),
             html.H1('welcome', style={'textAlign': 'left'}),
+            html.Hr(),
         ]
 
     elif pathname == "/visualisations":
         dropdown = GUI.build_dropdown_menu(data.dropdown_menu())
         radioItems = GUI.build_radioItems()
         heatmap = dcc.Graph(id="heatmap")
-        scatter = dcc.Graph(id="scatter")
+        #scatter = dcc.Graph(id="scatter")
+        gapminder = dcc.Graph(id="gapminder")
 
         return [
             html.Span([
 
-                dropdown, radioItems, scatter, heatmap
+                dropdown, html.Hr(), radioItems, html.Hr(), gapminder, heatmap
             ])
         ]
 
@@ -119,7 +122,13 @@ def render_page_content(pathname):
 
 
 @ app.callback(
-    Output("scatter", "figure"),
+    Output("heatmap", "figure"),
+    [Input("clickData", "gapminder")])
+def update_gapminder(imput_dropdown, imput_dropdown_2):
+    return GUI.build_gapminder(data.extract_df1(imput_dropdown), imput_dropdown_2)
+
+
+@ app.callback(
     Output("heatmap", "figure"),
     [Input("dropdown", "value"),
      Input("radioItems", "value")])
@@ -128,10 +137,6 @@ def update_heatmap(imput_dropdown, imput_dropdown_2):
         return GUI.build_Heatmap(data.extract_df1(imput_dropdown))
     else:
         return GUI.build_Heatmap2(data.extract_df1(imput_dropdown))
-
-
-def update_heatmap(imput_dropdown):
-    return GUI.build_scatter(data.extract_df1(imput_dropdown))
 
 
 if __name__ == '__main__':
